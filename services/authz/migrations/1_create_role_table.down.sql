@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS user_role_xref_;
+
+DROP TABLE IF EXISTS user_;
+
+DROP DOMAIN IF EXISTS user_id;

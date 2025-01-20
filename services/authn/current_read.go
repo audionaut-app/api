@@ -3,8 +3,8 @@ package authn
 import (
 	"context"
 
+	e "encore.app/internal/errs"
 	"encore.dev/beta/auth"
-	"encore.dev/beta/errs"
 )
 
 // GetCurrentUser returns the current user.
@@ -13,10 +13,7 @@ import (
 func (s *Service) GetCurrentUser(ctx context.Context) (*UserResponse, error) {
 	uid, ok := auth.UserID()
 	if !ok {
-		return nil, &errs.Error{
-			Code:    errs.Unauthenticated,
-			Message: "invalid or missing authentication credentials",
-		}
+		return nil, e.UnauthenticatedResponse
 	}
 
 	return s.GetUserById(ctx, string(uid))

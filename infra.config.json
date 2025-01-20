@@ -11,6 +11,11 @@
           "name": "authn",
           "username": "postgres",
           "password": { "$env": "DB_PASSWORD" }
+        },
+        "authz": {
+          "name": "authz",
+          "username": "postgres",
+          "password": { "$env": "DB_PASSWORD" }
         }
       }
     }
