@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 
+	e "encore.app/internal/errs"
 	"encore.dev/beta/errs"
 	"encore.dev/rlog"
 )
@@ -29,10 +30,7 @@ func (m *Model) GetUserById(ctx context.Context, id string) (*User, error) {
 			}
 		default:
 			rlog.Error("the server encountered a problem during token validation", "error", err)
-			return nil, &errs.Error{
-				Code:    errs.Internal,
-				Message: "the server encountered a problem during token validation",
-			}
+			return nil, e.InternalErrorResponse
 		}
 	}
 

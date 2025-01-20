@@ -6,8 +6,8 @@ import (
 	"crypto/sha256"
 	"encoding/base32"
 
+	e "encore.app/internal/errs"
 	"encore.app/internal/xid"
-	"encore.dev/beta/errs"
 	"encore.dev/rlog"
 )
 
@@ -31,10 +31,7 @@ func (m *Model) CreateTokenByUserId(ctx context.Context, id string, params *NewT
 	plaintext, hash, err := createToken()
 	if err != nil {
 		rlog.Error("failed to create token", "error", err)
-		return nil, &errs.Error{
-			Code:    errs.Internal,
-			Message: "the server encountered a problem and could not process your request",
-		}
+		return nil, e.InternalErrorResponse
 	}
 
 	row := m.DB.QueryRow(ctx, `
@@ -53,10 +50,7 @@ func (m *Model) CreateTokenByUserId(ctx context.Context, id string, params *NewT
 	err = row.Scan(&token.Id, &token.UserId, &token.Name, &token.Active, &token.AccessedAt, &token.ExpiresAt, &token.CreatedAt, &token.UpdatedAt, &token.Version)
 	if err != nil {
 		rlog.Error("failed to scan row", "error", err)
-		return nil, &errs.Error{
-			Code:    errs.Internal,
-			Message: "the server encountered a problem and could not process your request",
-		}
+		return nil, e.InternalErrorResponse
 	}
 
 	return &token, nil

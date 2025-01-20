@@ -8,6 +8,7 @@ import (
 	"errors"
 	"time"
 
+	e "encore.app/internal/errs"
 	"encore.dev/beta/errs"
 	"encore.dev/rlog"
 )
@@ -54,10 +55,7 @@ func (m *Model) ValidateToken(ctx context.Context, params *ValidateTokenParams) 
 			}
 		default:
 			rlog.Error("failed to scan row", "error", err)
-			return "", &errs.Error{
-				Code:    errs.Internal,
-				Message: "the server encountered a problem and could not process your request",
-			}
+			return "", e.InternalErrorResponse
 		}
 	}
 
